@@ -1,0 +1,46 @@
+<div class="container mt-5 align-items-center">
+  <h1 class="mb-4">AI Characters</h1>
+
+  <%= link_to "← Back",
+      :root,
+      class: "btn btn-dark" %>
+
+  <%= link_to "Create Character",
+      new_character_path,
+      class: "btn btn-dark" %>
+
+  <div class="row mt-3">
+    <% @characters.each do |character| %>
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h3><%= character.name %></h3>
+
+            <p>
+              <strong>Race:</strong>
+              <%= character.race %>
+            </p>
+
+            <p>
+              <strong>Role:</strong>
+              <%= character.role %>
+            </p>
+
+            <p>
+              <strong>Gender:</strong>
+              <%= character.gender %>
+            </p>
+
+            <%= link_to "View Character",
+                character_path(character),
+                class: "btn btn-dark mt-3" %>
+
+            <%= link_to "Edit Character",
+                edit_character_path(character),
+                class: "btn btn-dark mt-3" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

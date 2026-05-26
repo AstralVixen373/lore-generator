@@ -1,0 +1,37 @@
+<div class="d-flex flex-column align-items-center">
+  <h1>Edit character</h1>
+
+  <%= form_with model: @character do |f| %>
+    <div class="mb-3">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :personality %>
+      <%= f.text_area :personality %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :race %>
+      <%= f.text_field :race %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :class %>
+      <%= f.text_field :class %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :gender %>
+      <%= f.text_field :gender %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :history %>
+      <%= f.text_area :history %>
+    </div>
+
+    <%= f.submit "Update character" %>
+  <% end %>
+</div>
