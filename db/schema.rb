@@ -31,9 +31,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_26_104658) do
     t.bigint "character_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "users_id", null: false
+    t.bigint "user_id", null: false
     t.index ["character_id"], name: "index_chats_on_character_id"
-    t.index ["users_id"], name: "index_chats_on_users_id"
+    t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -203,7 +203,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_26_104658) do
 
   add_foreign_key "characters", "users"
   add_foreign_key "chats", "characters"
-  add_foreign_key "chats", "users", column: "users_id"
+  add_foreign_key "chats", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
