@@ -2,8 +2,15 @@ class CharactersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_character, only: [:edit, :update]
 
+  def index
+    @characters = Character.all
+  end
+
+  def show
+    @character = Character.find(params[:id])
+  end
+
   def edit
-    
   end
 
   def update
@@ -22,5 +29,5 @@ class CharactersController < ApplicationController
 
   def character_params
     params.require(:character).permit(:name, :personality, :race, :class, :gender, :history)
-  end
+  end 
 end
