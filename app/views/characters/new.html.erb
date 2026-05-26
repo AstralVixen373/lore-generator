@@ -1,0 +1,73 @@
+<div class="character-generator-page">
+  <div class="container py-5">
+    <div class="generator-card row g-0">
+
+      <div class="col-12 col-lg-4 generator-sidebar">
+        <div class="mb-4">
+          <h1>Générateur<br>de personnage</h1>
+          <p>Créez un personnage unique pour vos aventures.</p>
+        </div>
+
+        <%= simple_form_for @character do |f| %>
+        <%= f.input :race,
+        collection: ["Humain", "Elfe", "Nain", "Orc", "Demi-elfe", "Drakéide"],
+        prompt: "Choisir une race" %>
+
+        <%= f.input :role,
+        collection: ["Voleur", "Guerrier", "Mage", "Rôdeur", "Clerc", "Barde"],
+        prompt: "Choisir une classe" %>
+
+        <%= f.input :gender,
+        collection: ["Homme", "Femme", "Non-binaire", "Autre"],
+        prompt: "Choisir un genre" %>
+
+        <%= f.input :personnality,
+        collection: ["Froid, malin, indépendant", "Brave et loyal", "Mystérieux", "Chaotique", "Sage"],
+        prompt: "Choisir une personnalité" %>
+
+        <%= f.input :name,
+        placeholder: "Nom du personnage" %>
+
+        <%= f.input :history,
+        as: :text,
+        input_html: { rows: 4 },
+        placeholder: "Décris rapidement son passé..." %>
+
+        <%= f.submit "Générer le personnage", class: "btn generate-btn w-100 mt-3" %>
+        <% end %>
+      </div>
+
+<!-- <div class="col-12 col-lg-8 character-preview"> -->
+  <!-- <div class="preview-header"> -->
+    <!-- <div> -->
+      <!-- <h2>Votre personnage</h2> -->
+      <!-- <p>Un aperçu sera généré après validation du formulaire.</p> -->
+    <!-- </div> -->
+  <!-- </div> -->
+
+<!-- <div class="preview-placeholder"> -->
+<!-- <h3>Kaelen</h3> -->
+<!-- <p class="role-label">Voleur · Assassin</p> -->
+<!-- <p class="quote">“Dans l’ombre, je trouve la vérité.”</p> -->
+<!-- </div> -->
+
+<!-- <div class="row g-3 mt-3"> -->
+<!-- <div class="col-md-6"> -->
+<!-- <div class="info-box"> -->
+<!-- <h4>Histoire</h4> -->
+<!-- <p>Le passé du personnage apparaîtra ici.</p> -->
+<!-- </div> -->
+<!-- </div> -->
+
+<!-- <div class="col-md-6"> -->
+<!-- <div class="info-box"> -->
+<!-- <h4>Compétences</h4> -->
+<!-- <p>Les compétences seront ajoutées plus tard avec l’IA.</p> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+
+    </div>
+  </div>
+</div>
