@@ -23,7 +23,7 @@ puts "Creating characters..."
 character = Character.create!(
   user: user,
   name: "Kael",
-  personnality: "Courageux, loyal, mystérieux",
+  personality: "Courageux, loyal, mystérieux",
   race: "Elf",
   role: "Mage",
   gender: "Male",
