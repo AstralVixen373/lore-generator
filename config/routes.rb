@@ -4,9 +4,8 @@ Rails.application.routes.draw do
       controllers: {
          omniauth_callbacks: 'users/omniauth_callbacks'
       }
-  resources :characters, only: [:edit, :update]
+  resources :characters, only: [:edit, :update, :new, :create, :index, :show]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :characters, only: [:new, :create]
   # resources :chats, only: [:new, :create]
   # resources :messages, only: [:new, :create]
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -19,11 +18,4 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-<<<<<<< HEAD
-
-  resources :characters, only: [:index, :show]
-=======
-  #
-
->>>>>>> origin/new-create
 end
