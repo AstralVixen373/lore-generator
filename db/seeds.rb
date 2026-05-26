@@ -7,3 +7,48 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+puts "Cleaning database..."
+Message.destroy_all
+Chat.destroy_all
+Character.destroy_all
+User.destroy_all
+
+puts "Creating user..."
+user = User.create!(
+  email: "test@example.com",
+  password: "password"
+)
+
+puts "Creating characters..."
+character = Character.create!(
+  user: user,
+  name: "Kael",
+  personnality: "Courageux, loyal, mystérieux",
+  race: "Elf",
+  role: "Mage",
+  gender: "Male",
+  history: "Kael vient d'une ancienne cité oubliée."
+)
+
+puts "Creating chat..."
+
+chat = Chat.create!(
+  user: user,
+  character: character
+)
+
+puts "Creating messages..."
+
+Message.create!(
+  chat: chat,
+  role: "user",
+  content: "Bonjour Kael, raconte-moi ton histoire."
+)
+
+Message.create!(
+  chat: chat,
+  role: "assistant",
+  content: "Je viens d'une cité cachée entre les montagnes."
+)
+
+puts "Seed finished!"
