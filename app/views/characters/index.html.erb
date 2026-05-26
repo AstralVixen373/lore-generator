@@ -5,13 +5,9 @@
       :root,
       class: "btn btn-dark" %>
 
-  <button class="btn btn-dark">
-    Create Character
-  </button>
-  <%# TO BE REPLACED WITH THE BELOW VERSION ONCE NEW.HTML.ERB IS CREATED 
   <%= link_to "Create Character",
-      new_character_path, 
-      class: "btn btn-dark" %> 
+      new_character_path,
+      class: "btn btn-dark" %>
 
   <div class="row mt-3">
     <% @characters.each do |character| %>
@@ -37,6 +33,10 @@
 
             <%= link_to "View Character",
                 character_path(character),
+                class: "btn btn-dark mt-3" %>
+
+            <%= link_to "Edit Character",
+                edit_character_path(character),
                 class: "btn btn-dark mt-3" %>
           </div>
         </div>
