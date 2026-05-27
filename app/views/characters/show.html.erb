@@ -6,6 +6,12 @@
   <div class="card shadow-sm mt-3 p-4">
     <h1><%= @character.name %></h1>
 
+    <% if @character.image_url.present? %>
+      <%= image_tag @character.image_url,
+          alt: @character.name,
+          class: "img-fluid rounded mb-4" %>
+    <% end %>
+
     <p>
       <strong>Race:</strong>
       <%= @character.race %>

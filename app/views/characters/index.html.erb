@@ -13,6 +13,12 @@
     <% @characters.each do |character| %>
       <div class="col-12 col-md-6 col-lg-4 mb-4">
         <div class="card h-100 shadow-sm">
+          <% if character.image_url.present? %>
+            <%= image_tag character.image_url,
+                alt: character.name,
+                class: "card-img-top" %>
+          <% end %>
+
           <div class="card-body">
             <h3><%= character.name %></h3>
 

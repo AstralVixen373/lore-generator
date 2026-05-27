@@ -1,0 +1,198 @@
+.arcane-loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 10, 18, 0.82);
+  backdrop-filter: blur(6px);
+}
+
+.arcane-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 280px;
+  padding: 32px;
+  border: 1px solid rgba(181, 143, 255, 0.45);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top, rgba(122, 82, 255, 0.28), transparent 58%),
+    rgba(16, 18, 32, 0.94);
+  box-shadow:
+    0 0 42px rgba(120, 89, 255, 0.42),
+    inset 0 0 28px rgba(255, 255, 255, 0.05);
+  color: #f6f1ff;
+  text-align: center;
+}
+
+.arcane-loader p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.arcane-loader small {
+  color: #cfc8e8;
+}
+
+.arcane-ring {
+  position: relative;
+  width: 158px;
+  height: 158px;
+  display: grid;
+  place-items: center;
+  border: 3px solid rgba(154, 111, 255, 0.75);
+  border-radius: 50%;
+  box-shadow:
+    0 0 34px rgba(154, 111, 255, 0.75),
+    0 0 72px rgba(76, 175, 255, 0.34),
+    inset 0 0 36px rgba(76, 175, 255, 0.32);
+  animation: arcane-pulse 1.6s ease-in-out infinite;
+}
+
+.arcane-ring::before,
+.arcane-ring::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  border: 1px dashed rgba(246, 241, 255, 0.72);
+  animation: arcane-orbit 4s linear infinite;
+}
+
+.arcane-ring::after {
+  inset: 28px;
+  border-style: solid;
+  opacity: 0.45;
+  animation-direction: reverse;
+}
+
+.arcane-dice {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border: 3px solid #f6f1ff;
+  transform: rotate(45deg);
+  animation: arcane-spin 1.8s linear infinite;
+  box-shadow:
+    0 0 18px rgba(246, 241, 255, 0.75),
+    inset 0 0 18px rgba(154, 111, 255, 0.3);
+}
+
+.arcane-dice span {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f6f1ff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.85);
+}
+
+.arcane-dice span:nth-child(1) {
+  top: 14px;
+  left: 14px;
+}
+
+.arcane-dice span:nth-child(2) {
+  top: 31px;
+  left: 31px;
+}
+
+.arcane-dice span:nth-child(3) {
+  right: 14px;
+  bottom: 14px;
+}
+
+.arcane-orb {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #8fd3ff;
+  box-shadow: 0 0 18px rgba(143, 211, 255, 0.95);
+}
+
+.arcane-orb-one {
+  top: 6px;
+  left: 50%;
+  animation: arcane-orbit-one 2.6s linear infinite;
+}
+
+.arcane-orb-two {
+  right: 12px;
+  bottom: 34px;
+  background: #b58fff;
+  animation: arcane-orbit-two 3.2s linear infinite;
+}
+
+.arcane-orb-three {
+  left: 16px;
+  bottom: 38px;
+  background: #fff2b8;
+  animation: arcane-orbit-three 3.8s linear infinite;
+}
+
+@keyframes arcane-spin {
+  from {
+    transform: rotate(45deg);
+  }
+
+  to {
+    transform: rotate(405deg);
+  }
+}
+
+@keyframes arcane-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.82;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes arcane-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes arcane-orbit-one {
+  from {
+    transform: rotate(0deg) translateX(64px) rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg) translateX(64px) rotate(-360deg);
+  }
+}
+
+@keyframes arcane-orbit-two {
+  from {
+    transform: rotate(120deg) translateX(58px) rotate(-120deg);
+  }
+
+  to {
+    transform: rotate(480deg) translateX(58px) rotate(-480deg);
+  }
+}
+
+@keyframes arcane-orbit-three {
+  from {
+    transform: rotate(240deg) translateX(52px) rotate(-240deg);
+  }
+
+  to {
+    transform: rotate(600deg) translateX(52px) rotate(-600deg);
+  }
+}
