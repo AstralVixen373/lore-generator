@@ -1,13 +1,13 @@
 class CharactersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_character, only: [:edit, :update]
+  before_action :set_character, only: [:show, :edit, :update]
 
   def index
     @characters = Character.all
   end
 
   def show
-    @character = Character.find(params[:id])
+    @chats = @character.chats.where(user: current_user).order(created_at: :desc)
   end
 
   def edit
