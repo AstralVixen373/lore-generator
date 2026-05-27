@@ -10,7 +10,8 @@
         <p>Créez un personnage unique pour vos aventures.</p>
       </div>
 
-      <%= simple_form_for @character do |f| %>
+      <div data-controller="character-loader">
+      <%= simple_form_for @character, data: { action: "submit->character-loader#show" } do |f| %>
       <%= f.input :race,
       collection: ["Humain", "Elfe", "Nain", "Orc", "Demi-elfe", "Drakéide"],
       prompt: "Choisir une race" %>
@@ -35,8 +36,34 @@
       input_html: { rows: 4 },
       placeholder: "Décris rapidement son passé..." %>
 
-      <%= f.submit "Générer le personnage", class: "btn btn-dark mb-3" %>
+      <%= f.submit "Générer le personnage",
+          class: "btn btn-dark mb-3",
+          data: { character_loader_target: "submit" } %>
       <% end %>
+
+      <div
+        class="d-none position-fixed top-0 start-0 w-100 h-100 align-items-center justify-content-center"
+        style="z-index: 2000; background: rgba(8, 10, 18, 0.86); backdrop-filter: blur(6px);"
+        data-character-loader-target="overlay">
+        <div
+          class="d-flex flex-column align-items-center text-center"
+          style="min-width: 280px; padding: 32px; border: 1px solid rgba(181, 143, 255, 0.45); border-radius: 18px; background: radial-gradient(circle at top, rgba(122, 82, 255, 0.28), transparent 58%), rgba(16, 18, 32, 0.94); box-shadow: 0 0 42px rgba(120, 89, 255, 0.42); color: #f6f1ff;">
+          <div class="arcane-ring mb-3">
+            <span class="arcane-orb arcane-orb-one"></span>
+            <span class="arcane-orb arcane-orb-two"></span>
+            <span class="arcane-orb arcane-orb-three"></span>
+            <div class="arcane-dice">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <div class="spinner-border text-light mb-3" role="status" aria-hidden="true"></div>
+          <p class="mb-1 fw-bold">Invocation du personnage...</p>
+          <small style="color: #cfc8e8;">L’image est générée à partir de tes choix.</small>
+        </div>
+      </div>
+      </div>
     </div>
 
   <!-- <div class="col-12 col-lg-8 character-preview"> -->
