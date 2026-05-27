@@ -8,6 +8,7 @@
 
     <% if @character.image_url.present? %>
       <%= image_tag @character.image_url,
+          width: 512,
           alt: @character.name,
           class: "img-fluid rounded mb-4" %>
     <% end %>
