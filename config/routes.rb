@@ -4,7 +4,12 @@ Rails.application.routes.draw do
       controllers: {
          omniauth_callbacks: 'users/omniauth_callbacks'
       }
-  resources :characters, only: [:edit, :update, :new, :create, :index, :show]
+  resources :characters, only: [:edit, :update, :new, :create, :index, :show] do
+    resources :chats, only: [:create]
+  end
+  resources :chats, only: [:show, :destroy] do
+    resources :messages, only: [:create]
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # resources :chats, only: [:new, :create]
   # resources :messages, only: [:new, :create]

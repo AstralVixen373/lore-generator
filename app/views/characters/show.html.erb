@@ -37,8 +37,33 @@
 
     <hr>
 
-    <%= link_to "Start Chat",
-        "#",
+    <%= button_to "Start Chat",
+        character_chats_path(@character),
         class: "btn btn-dark mt-3" %>
+
+    <hr>
+
+    <h2>Chats</h2>
+
+    <% if @chats.any? %>
+      <ul>
+        <% @chats.each do |chat| %>
+          <li class="d-flex align-items-center gap-2 mb-2">
+            <% first_user_message = chat.messages.where(role: "user").order(:created_at).first %>
+            <%= link_to first_user_message&.content.presence || "New chat",
+                chat_path(chat) %>
+            <span class="text-muted">
+              <%= chat.created_at.strftime("%d/%m/%Y %H:%M") %>
+            </span>
+            <%= button_to "Delete",
+                chat_path(chat),
+                method: :delete,
+                class: "btn btn-sm btn-outline-danger" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No chats yet.</p>
+    <% end %>
   </div>
 </div>
