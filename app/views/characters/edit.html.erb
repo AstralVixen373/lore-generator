@@ -1,37 +1,39 @@
-<div class="d-flex flex-column align-items-center">
-  <h1>Edit character</h1>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <%= link_to "← Back",
+      :root,
+      class: "btn btn-dark mb-4" %>
+        
+      <div class="mb-4">
+        <h1>Edition de personnage</h1>
+      </div>
 
-  <%= form_with model: @character do |f| %>
-    <div class="mb-3">
-      <%= f.label :name %>
-      <%= f.text_field :name %>
+      <%= simple_form_for @character do |f| %>
+      <%= f.input :race,
+      collection: ["Humain", "Elfe", "Nain", "Orc", "Demi-elfe", "Drakéide"],
+      prompt: "Choisir une race" %>
+
+      <%= f.input :role,
+      collection: ["Voleur", "Guerrier", "Mage", "Rôdeur", "Clerc", "Barde"],
+      prompt: "Choisir une classe" %>
+
+      <%= f.input :gender,
+      collection: ["Homme", "Femme", "Non-binaire", "Autre"],
+      prompt: "Choisir un genre" %>
+
+      <%= f.input :personality,
+      collection: ["Froid, malin, indépendant", "Brave et loyal", "Mystérieux", "Chaotique", "Sage"],
+      prompt: "Choisir une personnalité" %>
+
+      <%= f.input :name,
+      placeholder: "Nom du personnage" %>
+
+      <%= f.input :history,
+      as: :text,
+      input_html: { rows: 4 },
+      placeholder: "Décris rapidement son passé..." %>
+
+      <%= f.submit "Mettre à jour le personnage", class: "btn btn-dark mb-3" %>
+      <% end %>
     </div>
-
-    <div class="mb-3">
-      <%= f.label :personality %>
-      <%= f.text_area :personality %>
-    </div>
-
-    <div class="mb-3">
-      <%= f.label :race %>
-      <%= f.text_field :race %>
-    </div>
-
-    <div class="mb-3">
-      <%= f.label :role %>
-      <%= f.text_field :role %>
-    </div>
-
-    <div class="mb-3">
-      <%= f.label :gender %>
-      <%= f.text_field :gender %>
-    </div>
-
-    <div class="mb-3">
-      <%= f.label :history %>
-      <%= f.text_area :history %>
-    </div>
-
-    <%= f.submit "Update character" %>
-  <% end %>
-</div>
