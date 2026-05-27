@@ -38,6 +38,11 @@
             <%= link_to "Edit Character",
                 edit_character_path(character),
                 class: "btn btn-dark mt-3" %>
+
+            <%= button_to "Delete Character",
+                character_path(character),
+                method: :delete,
+                class: "btn btn-outline-danger mt-3" %>
           </div>
         </div>
       </div>

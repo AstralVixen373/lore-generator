@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       controllers: {
          omniauth_callbacks: 'users/omniauth_callbacks'
       }
-  resources :characters, only: [:edit, :update, :new, :create, :index, :show] do
+  resources :characters, only: [:edit, :update, :new, :create, :index, :show, :destroy] do
     resources :chats, only: [:create]
   end
   resources :chats, only: [:show, :destroy] do
