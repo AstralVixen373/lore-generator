@@ -1,69 +1,160 @@
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6">
-      <%= link_to "← Back",
-          characters_path,
-          class: "btn btn-dark mb-4" %>
+<section class="character-new-page">
+  <div class="character-new-shell">
+    <div class="star-dust" aria-hidden="true">
+      <% 26.times do |index| %>
+        <span class="star-particle star-particle-<%= index + 1 %>"></span>
+      <% end %>
+    </div>
 
-      <div class="mb-4">
-        <h1>Character Creator</h1>
-        <p>Create a unique character to take on adventures.</p>
+    <header class="home-navbar">
+      <%= link_to root_path, class: "home-brand", aria: { label: "Go to homepage" } do %>
+        <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
+        <span class="home-brand-name">AI Lore Generator</span>
+      <% end %>
+      <div class="home-navbar-right">
+        <% if user_signed_in? %>
+          <a href="#" class="home-messages-link"><i class="fa-regular fa-envelope" aria-hidden="true"></i> Messages</a>
+          <div class="dropdown home-profile-menu">
+            <button class="home-avatar" id="characterNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+              <% if current_user.avatar_url.present? %>
+                <%= image_tag current_user.avatar_url,
+                    class: "home-avatar-image",
+                    alt: current_user.email,
+                    referrerpolicy: "no-referrer" %>
+              <% else %>
+                <% profile_name = current_user.respond_to?(:name) ? current_user.name.to_s.strip : "" %>
+                <% initials = if profile_name.present?
+                  profile_name.split.map { |part| part.first }.join.first(2).upcase
+                else
+                  current_user.email.to_s.first.to_s.upcase
+                end %>
+                <span><%= initials %></span>
+              <% end %>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end home-dropdown-menu" aria-labelledby="characterNavbarDropdown">
+              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class: "home-login-link" %>
+        <% end %>
       </div>
+    </header>
 
-      <div data-controller="character-loader">
-        <%= simple_form_for @character, data: { action: "submit->character-loader#show" } do |f| %>
-          <%= f.input :race,
-          collection: ["Human", "Elf", "Dwarf", "Orc", "Half-elf", "Draconians"],
-          prompt: "Choose a race" %>
-
-          <%= f.input :role,
-          collection: ["Thief", "Warrior", "Spellcaster", "Ranger", "Cleric", "Bard"],
-          prompt: "Choose a class" %>
-
-          <%= f.input :gender,
-          collection: ["Male", "Female", "Non-binary", "Other"],
-          prompt: "Choose a gender" %>
-
-          <%= f.input :personality,
-          collection: ["Cold, cunning & independant", "Brave & loyal", "Mysterious", "Chaotic", "Wise"],
-          prompt: "Choose a personality" %>
-
-          <%= f.input :name,
-          placeholder: "Character name" %>
-
-          <%= f.input :history,
-          :label => "Additional details",
-          as: :text,
-          input_html: { rows: 4 },
-          placeholder: "Describe your character here" %>
-
-          <%= f.submit "Generate character",
-              class: "btn btn-dark mb-3",
-              data: { character_loader_target: "submit" } %>
+    <div class="character-new-grid">
+      <section class="character-form-card">
+        <%= link_to characters_path, class: "character-back-link" do %>
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          Retour aux personnages
         <% end %>
 
-        <div
-          class="d-none position-fixed top-0 start-0 w-100 h-100 align-items-center justify-content-center"
-          style="z-index: 2000; background: rgba(8, 10, 18, 0.86); backdrop-filter: blur(6px);"
-          data-character-loader-target="overlay">
-          <div
-            class="d-flex flex-column align-items-center text-center"
-            style="min-width: 280px; padding: 32px; border: 1px solid rgba(181, 143, 255, 0.45); border-radius: 18px; background: radial-gradient(circle at top, rgba(122, 82, 255, 0.28), transparent 58%), rgba(16, 18, 32, 0.94); box-shadow: 0 0 42px rgba(120, 89, 255, 0.42); color: #f6f1ff;">
-            <div class="arcane-ring mb-3">
-              <span class="arcane-orb arcane-orb-one"></span>
-              <span class="arcane-orb arcane-orb-two"></span>
-              <span class="arcane-orb arcane-orb-three"></span>
-              <div class="arcane-dice">
-                <span></span>
-                <span></span>
-                <span></span>
+        <div class="character-form-heading">
+          <p class="character-kicker">CRÉEZ. IMAGINEZ. LÉGENDEZ.</p>
+          <h1>Générateur de personnage</h1>
+          <p>Créez un personnage unique pour vos aventures.</p>
+        </div>
+
+        <div data-controller="character-loader">
+          <%= simple_form_for @character, html: { class: "character-form" }, data: { action: "submit->character-loader#show" } do |f| %>
+            <div class="character-form-timeline">
+              <div class="character-step">
+                <span class="character-step-number">01</span>
+                <div class="character-step-fields">
+                  <%= f.input :race,
+                    label: "Race",
+                    collection: ["Human", "Elf", "Dwarf", "Orc", "Half-elf", "Draconians"],
+                    prompt: "Choisissez une race" %>
+                </div>
+              </div>
+
+              <div class="character-step">
+                <span class="character-step-number">02</span>
+                <div class="character-step-fields">
+                  <%= f.input :role,
+                    label: "Classe / Rôle",
+                    collection: ["Thief", "Warrior", "Spellcaster", "Ranger", "Cleric", "Bard"],
+                    prompt: "Choisissez une classe" %>
+                </div>
+              </div>
+
+              <div class="character-step">
+                <span class="character-step-number">03</span>
+                <div class="character-step-fields character-step-split">
+                  <%= f.input :gender,
+                    label: "Genre",
+                    collection: ["Male", "Female", "Non-binary", "Other"],
+                    prompt: "Choisissez un genre" %>
+
+                  <%= f.input :personality,
+                    label: "Personnalité",
+                    collection: ["Cold, cunning & independant", "Brave & loyal", "Mysterious", "Chaotic", "Wise"],
+                    prompt: "Choisissez une personnalité" %>
+                </div>
+              </div>
+
+              <div class="character-step">
+                <span class="character-step-number">04</span>
+                <div class="character-step-fields">
+                  <%= f.input :name,
+                    label: "Nom du personnage",
+                    placeholder: "Nom du personnage" %>
+                </div>
+              </div>
+
+              <div class="character-step">
+                <span class="character-step-number">05</span>
+                <div class="character-step-fields">
+                  <%= f.input :history,
+                    label: "Personnalisation avancée",
+                    as: :text,
+                    input_html: { rows: 4 },
+                    placeholder: "Décrivez votre personnage ici" %>
+                </div>
               </div>
             </div>
-            <p class="mb-1 fw-bold">Generating character...</p>
-            <small style="color: #cfc8e8;">Your character is being generated from your choices.</small>
+
+            <div class="character-submit-zone">
+              <%= f.submit "INVOQUER LE PERSONNAGE",
+                  class: "character-submit-button",
+                  data: { character_loader_target: "submit" } %>
+              <p>L’IA générera votre personnage unique.</p>
+            </div>
+          <% end %>
+
+          <div
+            class="character-loader-overlay d-none"
+            data-character-loader-target="overlay">
+            <div class="character-loader-card">
+              <div class="arcane-ring mb-3">
+                <span class="arcane-orb arcane-orb-one"></span>
+                <span class="arcane-orb arcane-orb-two"></span>
+                <span class="arcane-orb arcane-orb-three"></span>
+                <div class="arcane-dice">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+              <p>Génération du personnage...</p>
+              <small>L’image est générée à partir de vos choix.</small>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <aside class="character-new-side">
+        <div class="character-info-card">
+          <span class="character-info-icon"><i class="fa-solid fa-wand-sparkles" aria-hidden="true"></i></span>
+          <h2>Conseil</h2>
+          <p>Associez une race, un rôle et une personnalité contrastée pour créer une légende plus mémorable.</p>
+        </div>
+
+        <div class="character-info-card">
+          <span class="character-info-icon"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span>
+          <h2>Exemples de personnalisation avancée</h2>
+          <p>Ajoutez une prophétie, une dette ancienne, une peur secrète ou un artefact perdu pour enrichir son histoire.</p>
+        </div>
+      </aside>
     </div>
   </div>
-</div>
+</section>
