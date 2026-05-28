@@ -6,34 +6,34 @@
       class: "btn btn-dark mb-4" %>
         
       <div class="mb-4">
-        <h1>Edition de personnage</h1>
+        <h1>Character Editor</h1>
       </div>
 
       <%= simple_form_for @character do |f| %>
-      <%= f.input :race,
-      collection: ["Humain", "Elfe", "Nain", "Orc", "Demi-elfe", "Drakéide"],
-      prompt: "Choisir une race" %>
+        <%= f.input :race,
+          collection: ["Human", "Elf", "Dwarf", "Orc", "Half-elf", "Draconians"],
+          prompt: "Choose a race" %>
 
-      <%= f.input :role,
-      collection: ["Voleur", "Guerrier", "Mage", "Rôdeur", "Clerc", "Barde"],
-      prompt: "Choisir une classe" %>
+          <%= f.input :role,
+          collection: ["Thief", "Warrior", "Spellcaster", "Ranger", "Cleric", "Bard"],
+          prompt: "Choose a class" %>
 
-      <%= f.input :gender,
-      collection: ["Homme", "Femme", "Non-binaire", "Autre"],
-      prompt: "Choisir un genre" %>
+          <%= f.input :gender,
+          collection: ["Male", "Female", "Non-binary", "Other"],
+          prompt: "Choose a gender" %>
 
-      <%= f.input :personality,
-      collection: ["Froid, malin, indépendant", "Brave et loyal", "Mystérieux", "Chaotique", "Sage"],
-      prompt: "Choisir une personnalité" %>
+          <%= f.input :personality,
+          collection: ["Cold, cunning & independant", "Brave & loyal", "Mysterious", "Chaotic", "Wise"],
+          prompt: "Choose a personality" %>
 
-      <%= f.input :name,
-      placeholder: "Nom du personnage" %>
+          <%= f.input :name,
+          placeholder: "Character name" %>
 
-      <%= f.input :history,
-      as: :text,
-      input_html: { rows: 4 },
-      placeholder: "Décris rapidement son passé..." %>
+          <%= f.input :history,
+          as: :text,
+          input_html: { rows: 4 },
+          placeholder: "Describe your character" %>
 
-      <%= f.submit "Mettre à jour le personnage", class: "btn btn-dark mb-3" %>
+        <%= f.submit "Update character", class: "btn btn-dark mb-3" %>
       <% end %>
     </div>
