@@ -29,15 +29,11 @@ class CharactersController < ApplicationController
     @character = Character.new(character_params)
     @character.user = current_user
 
-    begin
-      @character.image_url = generated_character_image_url
-    rescue RubyLLM::Error, RubyLLM::ConfigurationError, RubyLLM::ModelNotFoundError => e
-      @character.errors.add(:base, "Image could not be generated: #{e.message}")
-      return render :new, status: :unprocessable_entity
-    end
-
     if @character.save
-      redirect_to character_path(@character), notice: "Character Created Succefully!"
+      GenerateCharacterImageJob.perform_later(@character.id)
+
+      redirect_to character_path(@character),
+                  notice: "Character Created Successfully!"
     else
       render :new, status: :unprocessable_entity
     end
@@ -56,29 +52,5 @@ class CharactersController < ApplicationController
 
   def character_params
     params.require(:character).permit(:name, :personality, :role, :gender, :race, :history)
-  end
-
-  def generated_character_image_url
-    image = RubyLLM.paint(character_image_prompt)
-
-    return image.url if image.url.present?
-    return "data:#{image.mime_type || "image/png"};base64,#{image.data}" if image.data.present?
-  end
-
-  def character_image_prompt
-    <<~PROMPT
-      Create a fantasy character portrait.
-
-      Character details:
-      Name: #{@character.name}
-      Race: #{@character.race}
-      Role: #{@character.role}
-      Gender: #{@character.gender}
-      Personality: #{@character.personality}
-      History: #{@character.history}
-
-      Style: high quality fantasy RPG character portrait, detailed, atmospheric, centered composition.
-      Do not include text, logos, UI, captions, or watermarks.
-    PROMPT
   end
 end
