@@ -33,9 +33,9 @@
       <%= @character.personality %>
     </p>
 
-    <p>
-      <strong>Backstory:</strong>
-    </p>
+      <% if @character.backstory.present? %>
+      <p><strong>Backstory: </strong><%= @character.backstory %></p>
+      <% end %>
 
     <hr>
 
