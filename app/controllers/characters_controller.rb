@@ -37,7 +37,7 @@ class CharactersController < ApplicationController
     end
 
     if @character.save
-      redirect_to characters_path, notice: "Character Created Succefully!"
+      redirect_to character_path(@character), notice: "Character Created Succefully!"
     else
       render :new, status: :unprocessable_entity
     end

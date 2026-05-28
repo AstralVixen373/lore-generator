@@ -2,99 +2,70 @@
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
       <%= link_to "← Back",
-      :root,
-      class: "btn btn-dark mb-4" %>
+          characters_path,
+          class: "btn btn-dark mb-4" %>
         
       <div class="mb-4">
-        <h1>Générateur de personnage</h1>
-        <p>Créez un personnage unique pour vos aventures.</p>
+        <h1>Character Creator</h1>
+        <p>Create a unique character to take on adventures.</p>
       </div>
 
       <div data-controller="character-loader">
-      <%= simple_form_for @character, data: { action: "submit->character-loader#show" } do |f| %>
-      <%= f.input :race,
-      collection: ["Humain", "Elfe", "Nain", "Orc", "Demi-elfe", "Drakéide"],
-      prompt: "Choisir une race" %>
+        <%= simple_form_for @character, data: { action: "submit->character-loader#show" } do |f| %>
+          <%= f.input :race,
+          collection: ["Human", "Elf", "Dwarf", "Orc", "Half-elf", "Draconians"],
+          prompt: "Choose a race" %>
 
-      <%= f.input :role,
-      collection: ["Voleur", "Guerrier", "Mage", "Rôdeur", "Clerc", "Barde"],
-      prompt: "Choisir une classe" %>
+          <%= f.input :role,
+          collection: ["Thief", "Warrior", "Spellcaster", "Ranger", "Cleric", "Bard"],
+          prompt: "Choose a class" %>
 
-      <%= f.input :gender,
-      collection: ["Homme", "Femme", "Non-binaire", "Autre"],
-      prompt: "Choisir un genre" %>
+          <%= f.input :gender,
+          collection: ["Male", "Female", "Non-binary", "Other"],
+          prompt: "Choose a gender" %>
 
-      <%= f.input :personality,
-      collection: ["Froid, malin, indépendant", "Brave et loyal", "Mystérieux", "Chaotique", "Sage"],
-      prompt: "Choisir une personnalité" %>
+          <%= f.input :personality,
+          collection: ["Cold, cunning & independant", "Brave & loyal", "Mysterious", "Chaotic", "Wise"],
+          prompt: "Choose a personality" %>
 
-      <%= f.input :name,
-      placeholder: "Nom du personnage" %>
+          <%= f.input :name,
+          placeholder: "Character name" %>
 
-      <%= f.input :history,
-      as: :text,
-      input_html: { rows: 4 },
-      placeholder: "Décris rapidement son passé..." %>
+          <%= f.input :history,
+          :label => "Additional details",
+          as: :text,
+          input_html: { rows: 4 },
+          placeholder: "Describe your character here" %>
 
-      <%= f.submit "Générer le personnage",
-          class: "btn btn-dark mb-3",
-          data: { character_loader_target: "submit" } %>
-      <% end %>
+          <%= f.submit "Generate character",
+              class: "btn btn-dark mb-3",
+              data: { character_loader_target: "submit" } %>
+        <% end %>
 
-      <div
-        class="d-none position-fixed top-0 start-0 w-100 h-100 align-items-center justify-content-center"
-        style="z-index: 2000; background: rgba(8, 10, 18, 0.86); backdrop-filter: blur(6px);"
-        data-character-loader-target="overlay">
         <div
-          class="d-flex flex-column align-items-center text-center"
-          style="min-width: 280px; padding: 32px; border: 1px solid rgba(181, 143, 255, 0.45); border-radius: 18px; background: radial-gradient(circle at top, rgba(122, 82, 255, 0.28), transparent 58%), rgba(16, 18, 32, 0.94); box-shadow: 0 0 42px rgba(120, 89, 255, 0.42); color: #f6f1ff;">
-          <div class="arcane-ring mb-3">
-            <span class="arcane-orb arcane-orb-one"></span>
-            <span class="arcane-orb arcane-orb-two"></span>
-            <span class="arcane-orb arcane-orb-three"></span>
-            <div class="arcane-dice">
-              <span></span>
-              <span></span>
-              <span></span>
+          class="d-none position-fixed top-0 start-0 w-100 h-100 align-items-center justify-content-center"
+          style="z-index: 2000; background: rgba(8, 10, 18, 0.86); backdrop-filter: blur(6px);"
+          data-character-loader-target="overlay">
+          <div
+            class="d-flex flex-column align-items-center text-center"
+            style="min-width: 280px; padding: 32px; border: 1px solid rgba(181, 143, 255, 0.45); border-radius: 18px; background: radial-gradient(circle at top, rgba(122, 82, 255, 0.28), transparent 58%), rgba(16, 18, 32, 0.94); box-shadow: 0 0 42px rgba(120, 89, 255, 0.42); color: #f6f1ff;">
+            <div class="arcane-ring mb-3">
+              <span class="arcane-orb arcane-orb-one"></span>
+              <span class="arcane-orb arcane-orb-two"></span>
+              <span class="arcane-orb arcane-orb-three"></span>
+              <div class="arcane-dice">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <div class="spinner-border text-light mb-3" role="status" aria-hidden="true"></div>
+              <p class="mb-1 fw-bold">Generating character...</p>
+              <small style="color: #cfc8e8;">The picture is generated from your choices.</small>
             </div>
           </div>
-          <div class="spinner-border text-light mb-3" role="status" aria-hidden="true"></div>
-          <p class="mb-1 fw-bold">Invocation du personnage...</p>
-          <small style="color: #cfc8e8;">L’image est générée à partir de tes choix.</small>
         </div>
       </div>
-      </div>
     </div>
-
-  <!-- <div class="col-12 col-lg-8 character-preview"> -->
-    <!-- <div class="preview-header"> -->
-      <!-- <div> -->
-        <!-- <h2>Votre personnage</h2> -->
-        <!-- <p>Un aperçu sera généré après validation du formulaire.</p> -->
-      <!-- </div> -->
-    <!-- </div> -->
-
-  <!-- <div class="preview-placeholder"> -->
-    <!-- <h3>Kaelen</h3> -->
-    <!-- <p class="role-label">Voleur · Assassin</p> -->
-    <!-- <p class="quote">“Dans l’ombre, je trouve la vérité.”</p> -->
-  <!-- </div> -->
-
-  <!-- <div class="row g-3 mt-3"> -->
-    <!-- <div class="col-md-6"> -->
-      <!-- <div class="info-box"> -->
-        <!-- <h4>Histoire</h4> -->
-        <!-- <p>Le passé du personnage apparaîtra ici.</p> -->
-      <!-- </div> -->
-    <!-- </div> -->
-  <!-- </div> -->
-
-  <!-- <div class="col-md-6"> -->
-    <!-- <div class="info-box"> -->
-      <!-- <h4>Compétences</h4> -->
-      <!-- <p>Les compétences seront ajoutées plus tard avec l’IA.</p> -->
-    <!-- </div> -->
-  <!-- </div> -->
-
   </div>
 </div>
