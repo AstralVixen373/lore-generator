@@ -1,15 +1,105 @@
-<!-- <div class="mt-3 mx-5"> -->
-<div class="d-flex flex-column align-items-center">
-  <h1>AI Lore Generator</h1>
-  <p>Create your persona !</p>
-</div>
+<section class="home-hero">
+  <div class="home-shell">
+    <div class="star-dust" aria-hidden="true">
+      <% 26.times do |index| %>
+        <span class="star-particle star-particle-<%= index + 1 %>"></span>
+      <% end %>
+    </div>
 
-<div class="d-flex flex-column align-items-center">
-  <%= link_to "Create Character",
-      new_character_path,
-      class: "btn btn-dark mb-3" %>
+    <header class="home-navbar">
+      <%= link_to root_path, class: "home-brand", aria: { label: "Go to homepage" } do %>
+        <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
+        <span class="home-brand-name">AI Lore Generator</span>
+      <% end %>
+      <div class="home-navbar-right">
+        <% if user_signed_in? %>
+          <a href="#" class="home-messages-link"><i class="fa-regular fa-envelope" aria-hidden="true"></i> Messages</a>
+          <div class="dropdown home-profile-menu">
+            <button class="home-avatar" id="homeNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+              <% if current_user.avatar_url.present? %>
+                <%= image_tag current_user.avatar_url,
+                    class: "home-avatar-image",
+                    alt: current_user.email,
+                    referrerpolicy: "no-referrer" %>
+              <% else %>
+                <% profile_name = current_user.respond_to?(:name) ? current_user.name.to_s.strip : "" %>
+                <% initials = if profile_name.present?
+                  profile_name.split.map { |part| part.first }.join.first(2).upcase
+                else
+                  current_user.email.to_s.first.to_s.upcase
+                end %>
+                <span><%= initials %></span>
+              <% end %>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end home-dropdown-menu" aria-labelledby="homeNavbarDropdown">
+              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class: "home-login-link" %>
+        <% end %>
+      </div>
+    </header>
 
-  <%= link_to "My Characters",
-      characters_path,
-      class: "btn btn-dark" %>
-</div>
+    <div class="home-grid">
+      <div class="home-content">
+        <p class="home-tagline">CRÉEZ. IMAGINEZ. LÉGENDEZ.</p>
+
+        <h1 class="home-title">
+          Donnez vie à vos <span class="home-title-glow">légendes</span>
+        </h1>
+        <p class="home-subtitle">
+          Créez des personnages uniques, façonnés par vos choix et nourris par l’intelligence artificielle.
+        </p>
+
+        <div class="home-actions">
+          <%= link_to new_character_path, class: "home-cta home-cta-primary" do %>
+            <span class="home-cta-icon" aria-hidden="true"><i class="fa-solid fa-wand-sparkles"></i></span>
+            <span>
+              <span class="home-cta-title">Créer un personnage</span>
+              <span class="home-cta-subtitle">Invoquez une nouvelle légende</span>
+            </span>
+            <span class="home-cta-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+          <% end %>
+
+          <%= link_to characters_path, class: "home-cta home-cta-secondary" do %>
+            <span class="home-cta-icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
+            <span>
+              <span class="home-cta-title">Voir mes personnages</span>
+              <span class="home-cta-subtitle">Gérez vos légendes créées</span>
+            </span>
+            <span class="home-cta-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+          <% end %>
+        </div>
+
+        <div class="home-features">
+          <article class="home-feature">
+            <span class="home-feature-icon"><i class="fa-solid fa-wand-sparkles"></i></span>
+            <div>
+              <h2>Personnages uniques</h2>
+              <p>Chaque création est 100% originale</p>
+            </div>
+          </article>
+          <article class="home-feature">
+            <span class="home-feature-icon"><i class="fa-solid fa-book-open"></i></span>
+            <div>
+              <h2>Histoires profondes</h2>
+              <p>Des récits riches et cohérents</p>
+            </div>
+          </article>
+          <article class="home-feature">
+            <span class="home-feature-icon"><i class="fa-solid fa-shield-halved"></i></span>
+            <div>
+              <h2>Univers illimités</h2>
+              <p>Explorez tous les genres et toutes les époques</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="home-art-space" aria-hidden="true"></div>
+    </div>
+
+    <p class="home-quote">L’imagination est la première étape de toute légende.</p>
+  </div>
+</section>
