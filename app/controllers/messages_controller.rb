@@ -69,6 +69,7 @@ class MessagesController < ApplicationController
       Gender: #{@character.gender}
       Personality: #{@character.personality}
       History: #{@character.history}
+      backstory: #{@character.backstory}
     CONTEXT
   end
 
