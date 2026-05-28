@@ -1,4 +1,5 @@
 class CharactersController < ApplicationController
+  MAX_MESSAGE_LENGTH = 1_000
   before_action :authenticate_user!
   before_action :set_character, only: %i[show edit update destroy]
 
@@ -33,6 +34,13 @@ class CharactersController < ApplicationController
       @character.image_url = generated_character_image_url
     rescue RubyLLM::Error, RubyLLM::ConfigurationError, RubyLLM::ModelNotFoundError => e
       @character.errors.add(:base, "Image could not be generated: #{e.message}")
+      return render :new, status: :unprocessable_entity
+    end
+
+    begin
+      @character.backstory = generated_character_backstory
+    rescue RubyLLM::Error, RubyLLM::ConfigurationError, RubyLLM::ModelNotFoundError => e
+      @character.errors.add(:base, "Backstory could not be generated: #{e.message}")
       return render :new, status: :unprocessable_entity
     end
 
@@ -79,6 +87,28 @@ class CharactersController < ApplicationController
 
       Style: high quality fantasy RPG character portrait, detailed, atmospheric, centered composition.
       Do not include text, logos, UI, captions, or watermarks.
+    PROMPT
+  end
+
+  def generated_character_backstory
+    chat = RubyLLM.chat
+    response = chat.ask(character_backstory_prompt)
+    response.content
+  end
+
+  def character_backstory_prompt
+    <<~PROMPT
+      Create a fantasy character backstory in a few lines
+
+      Character details:
+      Name: #{@character.name}
+      Race: #{@character.race}
+      Role: #{@character.role}
+      Gender: #{@character.gender}
+      Personality: #{@character.personality}
+      History: #{@character.history}
+
+      Style: detailed, atmospheric, rich narrative.
     PROMPT
   end
 end
