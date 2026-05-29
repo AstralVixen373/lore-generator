@@ -1,21 +1,61 @@
-<div class="container mt-5">
-  <%= link_to "← Back to character",
-      character_path(@chat.character),
-      class: "btn btn-dark" %>
-
-  <div class="card shadow-sm mt-3 p-4">
-    <h1>Chat with <%= @chat.character.name %></h1>
-
-    <div id="messages">
-      <% if @chat.messages.any? %>
-        <% @chat.messages.each do |message| %>
-          <%= render "messages/message", message: message %>
-        <% end %>
-      <% else %>
-        <p id="empty_messages">No messages yet.</p>
+<section class="chat-show-page">
+  <div class="chat-show-overlay">
+    <header class="home-navbar chat-show-navbar">
+      <%= link_to root_path, class: "home-brand", aria: { label: "Retour à l'accueil" } do %>
+        <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
+        <span class="home-brand-name">AI Lore <span>Generator</span></span>
       <% end %>
-    </div>
 
-    <%= render "messages/form", chat: @chat, message: @message %>
+      <div class="home-navbar-right">
+        <% if user_signed_in? %>
+          <div class="dropdown home-profile-menu">
+            <button class="home-avatar" id="chatNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ouvrir le menu utilisateur">
+              <% if current_user.avatar_url.present? %>
+                <%= image_tag current_user.avatar_url,
+                    class: "home-avatar-image",
+                    alt: current_user.email,
+                    referrerpolicy: "no-referrer" %>
+              <% else %>
+                <% profile_name = current_user.respond_to?(:name) ? current_user.name.to_s.strip : "" %>
+                <% initials = if profile_name.present?
+                  profile_name.split.map { |part| part.first }.join.first(2).upcase
+                else
+                  current_user.email.to_s.first.to_s.upcase
+                end %>
+                <span><%= initials %></span>
+              <% end %>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end home-dropdown-menu" aria-labelledby="chatNavbarDropdown">
+              <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to "Connexion", new_user_session_path, class: "home-login-link" %>
+        <% end %>
+      </div>
+    </header>
+
+    <main class="chat-show-shell">
+      <%= link_to character_path(@chat.character), class: "chat-show-back" do %>
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        <span>Retour au personnage</span>
+      <% end %>
+
+      <section class="chat-show-card">
+        <h1>Discussion avec <%= @chat.character.name.presence || "ce personnage" %></h1>
+
+        <div id="messages" class="chat-show-messages">
+          <% if @chat.messages.any? %>
+            <% @chat.messages.each do |message| %>
+              <%= render "messages/message", message: message %>
+            <% end %>
+          <% else %>
+            <p id="empty_messages" class="chat-show-empty">Aucun message pour le moment.</p>
+          <% end %>
+        </div>
+
+        <%= render "messages/form", chat: @chat, message: @message %>
+      </section>
+    </main>
   </div>
-</div>
+</section>
