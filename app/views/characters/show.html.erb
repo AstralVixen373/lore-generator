@@ -1,47 +1,48 @@
 <div class="container mt-5">
   <%= link_to "← Back",
-      characters_path,
-      class: "btn btn-dark" %>
-
+  characters_path,
+  class: "btn btn-dark" %>
+  
   <div class="card shadow-sm mt-3 p-4">
+    <%= turbo_stream_from "character_#{@character.id}" %>
+    
     <h1><%= @character.name %></h1>
 
-    <% if @character.image_url.present? %>
-      <%= image_tag @character.image_url,
-          width: 512,
-          alt: @character.name,
-          class: "img-fluid rounded mb-4" %>
-    <% end %>
+    <div class="d-flex justify-content-center">
+      <%= render "image", character: @character %>
+    </div>
 
-    <p>
-      <strong>Race:</strong>
-      <%= @character.race %>
-    </p>
+    <div class="character-info mt-5">
+      <p>
+        <strong>Race:</strong>
+        <%= @character.race %>
+      </p>
 
-    <p>
-      <strong>Role:</strong>
-      <%= @character.role %>
-    </p>
+      <p>
+        <strong>Role:</strong>
+        <%= @character.role %>
+      </p>
 
-    <p>
-      <strong>Gender:</strong>
-      <%= @character.gender %>
-    </p>
+      <p>
+        <strong>Gender:</strong>
+        <%= @character.gender %>
+      </p>
 
-    <p>
-      <strong>Personality:</strong>
-      <%= @character.personality %>
-    </p>
+      <p>
+        <strong>Personality:</strong>
+        <%= @character.personality %>
+      </p>
 
-      <% if @character.backstory.present? %>
-      <p><strong>Backstory: </strong><%= @character.backstory %></p>
-      <% end %>
+        <% if @character.backstory.present? %>
+        <p><strong>Backstory: </strong><%= @character.backstory %></p>
+        <% end %>
 
-    <hr>
+      <hr>
 
-    <%= button_to "Start Chat",
-        character_chats_path(@character),
-        class: "btn btn-dark mt-3" %>
+      <%= button_to "Start Chat",
+          character_chats_path(@character),
+          class: "btn btn-dark mt-3" %>
+    </div>
 
     <hr>
 

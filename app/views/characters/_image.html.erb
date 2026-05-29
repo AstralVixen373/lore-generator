@@ -1,0 +1,13 @@
+<div id="character_image">
+  <% if character.image_url.present? %>
+    <%= image_tag character.image_url,
+        width: 512, 
+        alt: @character.name,
+        class: "img-fluid rounded shadow" %>
+  <% else %>
+    <div class="text-center p-5">
+      <div class="spinner-border"></div>
+      <p class="mt-3">Generating portrait...</p>
+    </div>
+  <% end %>
+</div>
