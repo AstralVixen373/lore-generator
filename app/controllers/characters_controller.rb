@@ -16,7 +16,7 @@ class CharactersController < ApplicationController
 
   def update
     if @character.update(character_params)
-      redirect_to root_path
+      redirect_to character_path(@character)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -29,14 +29,14 @@ class CharactersController < ApplicationController
   def create
     @character = Character.new(character_params)
     @character.user = current_user
-    
+
     begin
       @character.backstory = generated_character_backstory
     rescue RubyLLM::Error, RubyLLM::ConfigurationError, RubyLLM::ModelNotFoundError => e
       @character.errors.add(:base, "Backstory could not be generated: #{e.message}")
       return render :new, status: :unprocessable_entity
     end
-    
+
     if @character.save
       GenerateCharacterImageJob.perform_later(@character.id)
 
@@ -45,7 +45,6 @@ class CharactersController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
-
   end
 
   def destroy
