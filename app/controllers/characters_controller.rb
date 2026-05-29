@@ -16,7 +16,7 @@ class CharactersController < ApplicationController
 
   def update
     if @character.update(character_params)
-      redirect_to root_path
+      redirect_to character_path(@character)
     else
       render :edit, status: :unprocessable_entity
     end
