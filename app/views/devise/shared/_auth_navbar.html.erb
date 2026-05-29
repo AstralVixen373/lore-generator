@@ -1,0 +1,10 @@
+<header class="home-navbar auth-navbar">
+  <%= link_to root_path, class: "home-brand", aria: { label: "Retour à l'accueil" } do %>
+    <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
+    <span class="home-brand-name">AI Lore Generator</span>
+  <% end %>
+
+  <div class="home-navbar-right">
+    <%= link_to "Accueil", root_path, class: "auth-login-link" %>
+  </div>
+</header>

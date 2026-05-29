@@ -1,9 +1,9 @@
-<div id="new_message_container" class="mt-4">
+<div id="new_message_container" class="chat-message-form">
   <%= simple_form_for [chat, message] do |f| %>
     <%= f.input :content,
-        label: "Ask a question",
+        label: "Votre message",
         required: true,
-        placeholder: "Ask something about this character..." %>
-    <%= f.button :submit, "Send", class: "btn btn-dark" %>
+        placeholder: "Écrivez quelque chose à ce personnage..." %>
+    <%= f.button :submit, "Envoyer", class: "chat-message-submit" %>
   <% end %>
 </div>

@@ -1,16 +1,15 @@
 <section class="characters-index-page">
   <div class="characters-index-shell">
     <header class="home-navbar">
-      <%= link_to root_path, class: "home-brand", aria: { label: "Go to homepage" } do %>
+      <%= link_to root_path, class: "home-brand", aria: { label: "Retour à l'accueil" } do %>
         <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
         <span class="home-brand-name">AI Lore <span>Generator</span></span>
       <% end %>
 
       <div class="home-navbar-right">
         <% if user_signed_in? %>
-          <a href="#" class="home-messages-link"><i class="fa-regular fa-envelope" aria-hidden="true"></i> Messages</a>
           <div class="dropdown home-profile-menu">
-            <button class="home-avatar" id="charactersNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+            <button class="home-avatar" id="charactersNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ouvrir le menu utilisateur">
               <% if current_user.avatar_url.present? %>
                 <%= image_tag current_user.avatar_url,
                     class: "home-avatar-image",
@@ -27,11 +26,11 @@
               <% end %>
             </button>
             <div class="dropdown-menu dropdown-menu-end home-dropdown-menu" aria-labelledby="charactersNavbarDropdown">
-              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
+              <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
             </div>
           </div>
         <% else %>
-          <%= link_to "Login", new_user_session_path, class: "home-login-link" %>
+          <%= link_to "Connexion", new_user_session_path, class: "home-login-link" %>
         <% end %>
       </div>
     </header>
@@ -45,12 +44,12 @@
       <div class="characters-index-actions">
         <%= link_to root_path, class: "characters-index-button characters-index-button-muted" do %>
           <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-          <span>Back</span>
+          <span>Retour</span>
         <% end %>
 
         <%= link_to new_character_path, class: "characters-index-button characters-index-button-primary" do %>
           <i class="fa-solid fa-plus" aria-hidden="true"></i>
-          <span>Create Character</span>
+          <span>Créer un personnage</span>
         <% end %>
       </div>
 
@@ -75,28 +74,28 @@
 
                 <dl class="character-card-stats">
                   <div>
-                    <dt><i class="fa-solid fa-dna" aria-hidden="true"></i> Race:</dt>
-                    <dd><%= character.race.presence || "Non renseignée" %></dd>
+                    <dt><i class="fa-solid fa-dna" aria-hidden="true"></i> Race :</dt>
+                    <dd><%= character_display_value(:race, character.race, fallback: "Non renseignée") %></dd>
                   </div>
                   <div>
-                    <dt><i class="fa-solid fa-ring" aria-hidden="true"></i> Role:</dt>
-                    <dd><%= character.role.presence || "Non renseigné" %></dd>
+                    <dt><i class="fa-solid fa-ring" aria-hidden="true"></i> Rôle :</dt>
+                    <dd><%= character_display_value(:role, character.role) %></dd>
                   </div>
                   <div>
-                    <dt><i class="fa-solid fa-venus-mars" aria-hidden="true"></i> Gender:</dt>
-                    <dd><%= character.gender.presence || "Non renseigné" %></dd>
+                    <dt><i class="fa-solid fa-venus-mars" aria-hidden="true"></i> Genre :</dt>
+                    <dd><%= character_display_value(:gender, character.gender) %></dd>
                   </div>
                 </dl>
 
                 <div class="character-card-actions">
                   <%= link_to character_path(character), class: "character-card-action" do %>
                     <i class="fa-regular fa-eye" aria-hidden="true"></i>
-                    <span>View Character</span>
+                    <span>Voir le personnage</span>
                   <% end %>
 
                   <%= link_to edit_character_path(character), class: "character-card-action" do %>
                     <i class="fa-solid fa-pen" aria-hidden="true"></i>
-                    <span>Edit Character</span>
+                    <span>Modifier</span>
                   <% end %>
                 </div>
 
@@ -105,7 +104,7 @@
                     class: "character-card-delete",
                     data: { turbo_confirm: "Supprimer ce personnage ?" } do %>
                   <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
-                  <span>Delete Character</span>
+                  <span>Supprimer</span>
                 <% end %>
               </div>
             </article>

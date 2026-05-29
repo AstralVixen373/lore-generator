@@ -7,15 +7,14 @@
     </div>
 
     <header class="home-navbar">
-      <%= link_to root_path, class: "home-brand", aria: { label: "Go to homepage" } do %>
+      <%= link_to root_path, class: "home-brand", aria: { label: "Retour à l'accueil" } do %>
         <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
         <span class="home-brand-name">AI Lore Generator</span>
       <% end %>
       <div class="home-navbar-right">
         <% if user_signed_in? %>
-          <a href="#" class="home-messages-link"><i class="fa-regular fa-envelope" aria-hidden="true"></i> Messages</a>
           <div class="dropdown home-profile-menu">
-            <button class="home-avatar" id="characterNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+            <button class="home-avatar" id="characterNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ouvrir le menu utilisateur">
               <% if current_user.avatar_url.present? %>
                 <%= image_tag current_user.avatar_url,
                     class: "home-avatar-image",
@@ -32,11 +31,11 @@
               <% end %>
             </button>
             <div class="dropdown-menu dropdown-menu-end home-dropdown-menu" aria-labelledby="characterNavbarDropdown">
-              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
+              <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
             </div>
           </div>
         <% else %>
-          <%= link_to "Login", new_user_session_path, class: "home-login-link" %>
+          <%= link_to "Connexion", new_user_session_path, class: "home-login-link" %>
         <% end %>
       </div>
     </header>
@@ -45,7 +44,7 @@
       <section class="character-form-card">
         <%= link_to characters_path, class: "character-back-link" do %>
           <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-          Retour aux personnages
+          Voir mes personnages
         <% end %>
 
         <div class="character-form-heading">
@@ -62,7 +61,7 @@
                 <div class="character-step-fields">
                   <%= f.input :race,
                     label: "Race",
-                    collection: ["Human", "Elf", "Dwarf", "Orc", "Half-elf", "Draconians"],
+                    collection: [["Humain", "Human"], ["Elfe", "Elf"], ["Nain", "Dwarf"], ["Orc", "Orc"], ["Demi-elfe", "Half-elf"], ["Draconien", "Draconians"]],
                     prompt: "Choisissez une race" %>
                 </div>
               </div>
@@ -72,7 +71,7 @@
                 <div class="character-step-fields">
                   <%= f.input :role,
                     label: "Classe / Rôle",
-                    collection: ["Thief", "Warrior", "Spellcaster", "Ranger", "Cleric", "Bard"],
+                    collection: [["Voleur", "Thief"], ["Guerrier", "Warrior"], ["Mage", "Spellcaster"], ["Rôdeur", "Ranger"], ["Clerc", "Cleric"], ["Barde", "Bard"]],
                     prompt: "Choisissez une classe" %>
                 </div>
               </div>
@@ -82,12 +81,12 @@
                 <div class="character-step-fields character-step-split">
                   <%= f.input :gender,
                     label: "Genre",
-                    collection: ["Male", "Female", "Non-binary", "Other"],
+                    collection: [["Homme", "Male"], ["Femme", "Female"], ["Non-binaire", "Non-binary"], ["Autre", "Other"]],
                     prompt: "Choisissez un genre" %>
 
                   <%= f.input :personality,
                     label: "Personnalité",
-                    collection: ["Cold, cunning & independant", "Brave & loyal", "Mysterious", "Chaotic", "Wise"],
+                    collection: [["Froid, rusé et indépendant", "Cold, cunning & independant"], ["Brave et loyal", "Brave & loyal"], ["Mystérieux", "Mysterious"], ["Chaotique", "Chaotic"], ["Sage", "Wise"]],
                     prompt: "Choisissez une personnalité" %>
                 </div>
               </div>
