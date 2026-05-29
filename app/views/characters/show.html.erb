@@ -44,6 +44,19 @@
           <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
           <span>Back</span>
         <% end %>
+
+        <%= link_to edit_character_path(@character), class: "character-show-back" do %>
+          <i class="fa-solid fa-pen" aria-hidden="true"></i>
+          <span>Edit Character</span>
+        <% end %>
+
+        <%= button_to character_path(@character),
+            method: :delete,
+            class: "character-show-delete",
+            data: { turbo_confirm: "Supprimer ce personnage ?" } do %>
+          <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+          <span>Delete Character</span>
+        <% end %>
       </div>
 
       <div class="character-show-layout">
