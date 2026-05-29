@@ -25,11 +25,6 @@ class GenerateCharacterImageJob < ApplicationJob
     <<~PROMPT
       Create a fantasy character portrait.
 
-      Generate ONLY a fictional backstory paragraph.
-
-      Do NOT repeat the character sheet.
-      Do NOT include labels like Name:, Race:, Role:, Gender:, Personality: or Description: in the generated paragraph.
-
       Character details:
       Name: #{character.name}
       Race: #{character.race}
