@@ -1,57 +1,124 @@
-<div class="container mt-5 align-items-center">
-  <h1 class="mb-4">AI Characters</h1>
+<section class="characters-index-page">
+  <div class="characters-index-shell">
+    <header class="home-navbar">
+      <%= link_to root_path, class: "home-brand", aria: { label: "Go to homepage" } do %>
+        <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
+        <span class="home-brand-name">AI Lore <span>Generator</span></span>
+      <% end %>
 
-  <%= link_to "← Back",
-      :root,
-      class: "btn btn-dark" %>
-
-  <%= link_to "Create Character",
-      new_character_path,
-      class: "btn btn-dark" %>
-
-  <div class="row mt-3">
-    <% @characters.each do |character| %>
-      <div class="col-12 col-md-6 col-lg-4 mb-4">
-        <div class="card h-100 shadow-sm">
-          <% if character.image_url.present? %>
-            <%= image_tag character.image_url,
-                alt: character.name,
-                class: "card-img-top" %>
-          <% end %>
-
-          <div class="card-body">
-            <h3><%= character.name %></h3>
-
-            <p>
-              <strong>Race:</strong>
-              <%= character.race %>
-            </p>
-
-            <p>
-              <strong>Role:</strong>
-              <%= character.role %>
-            </p>
-
-            <p>
-              <strong>Gender:</strong>
-              <%= character.gender %>
-            </p>
-
-            <%= link_to "View Character",
-                character_path(character),
-                class: "btn btn-dark mt-3" %>
-
-            <%= link_to "Edit Character",
-                edit_character_path(character),
-                class: "btn btn-dark mt-3" %>
-
-            <%= button_to "Delete Character",
-                character_path(character),
-                method: :delete,
-                class: "btn btn-outline-danger mt-3" %>
+      <div class="home-navbar-right">
+        <% if user_signed_in? %>
+          <a href="#" class="home-messages-link"><i class="fa-regular fa-envelope" aria-hidden="true"></i> Messages</a>
+          <div class="dropdown home-profile-menu">
+            <button class="home-avatar" id="charactersNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+              <% if current_user.avatar_url.present? %>
+                <%= image_tag current_user.avatar_url,
+                    class: "home-avatar-image",
+                    alt: current_user.email,
+                    referrerpolicy: "no-referrer" %>
+              <% else %>
+                <% profile_name = current_user.respond_to?(:name) ? current_user.name.to_s.strip : "" %>
+                <% initials = if profile_name.present?
+                  profile_name.split.map { |part| part.first }.join.first(2).upcase
+                else
+                  current_user.email.to_s.first.to_s.upcase
+                end %>
+                <span><%= initials %></span>
+              <% end %>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end home-dropdown-menu" aria-labelledby="charactersNavbarDropdown">
+              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
+            </div>
           </div>
-        </div>
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class: "home-login-link" %>
+        <% end %>
       </div>
-    <% end %>
+    </header>
+
+    <div class="characters-index-content">
+      <div class="characters-index-heading">
+        <h1>Mes personnages</h1>
+        <p>Gérez et explorez vos légendes créées.</p>
+      </div>
+
+      <div class="characters-index-actions">
+        <%= link_to root_path, class: "characters-index-button characters-index-button-muted" do %>
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          <span>Back</span>
+        <% end %>
+
+        <%= link_to new_character_path, class: "characters-index-button characters-index-button-primary" do %>
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+          <span>Create Character</span>
+        <% end %>
+      </div>
+
+      <% if @characters.any? %>
+        <div class="characters-grid">
+          <% @characters.each do |character| %>
+            <article class="character-card">
+              <div class="character-card-visual">
+                <% if character.image_url.present? %>
+                  <%= image_tag character.image_url,
+                      alt: character.name,
+                      class: "character-card-image" %>
+                <% else %>
+                  <div class="character-card-placeholder" aria-hidden="true">
+                    <i class="fa-solid fa-wand-sparkles"></i>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="character-card-body">
+                <h2><%= character.name.presence || "Personnage sans nom" %></h2>
+
+                <dl class="character-card-stats">
+                  <div>
+                    <dt><i class="fa-solid fa-dna" aria-hidden="true"></i> Race:</dt>
+                    <dd><%= character.race.presence || "Non renseignée" %></dd>
+                  </div>
+                  <div>
+                    <dt><i class="fa-solid fa-ring" aria-hidden="true"></i> Role:</dt>
+                    <dd><%= character.role.presence || "Non renseigné" %></dd>
+                  </div>
+                  <div>
+                    <dt><i class="fa-solid fa-venus-mars" aria-hidden="true"></i> Gender:</dt>
+                    <dd><%= character.gender.presence || "Non renseigné" %></dd>
+                  </div>
+                </dl>
+
+                <div class="character-card-actions">
+                  <%= link_to character_path(character), class: "character-card-action" do %>
+                    <i class="fa-regular fa-eye" aria-hidden="true"></i>
+                    <span>View Character</span>
+                  <% end %>
+
+                  <%= link_to edit_character_path(character), class: "character-card-action" do %>
+                    <i class="fa-solid fa-pen" aria-hidden="true"></i>
+                    <span>Edit Character</span>
+                  <% end %>
+                </div>
+
+                <%= button_to character_path(character),
+                    method: :delete,
+                    class: "character-card-delete",
+                    data: { turbo_confirm: "Supprimer ce personnage ?" } do %>
+                  <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                  <span>Delete Character</span>
+                <% end %>
+              </div>
+            </article>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="characters-empty-state">
+          <i class="fa-solid fa-wand-sparkles" aria-hidden="true"></i>
+          <h2>Aucun personnage pour le moment</h2>
+          <p>Créez votre première légende pour commencer votre univers.</p>
+          <%= link_to "Créer un personnage", new_character_path, class: "characters-index-button characters-index-button-primary" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
+</section>

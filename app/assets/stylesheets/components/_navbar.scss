@@ -10,3 +10,16 @@
 .navbar-lewagon .navbar-brand img {
   width: 40px;
 }
+
+.navbar-lewagon .dropdown-menu {
+  overflow: hidden;
+  padding: 0;
+}
+
+.navbar-lewagon .dropdown-item {
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  border-radius: 0;
+}
