@@ -1,81 +1,156 @@
-<div class="container mt-5">
-  <%= link_to "← Back",
-  characters_path,
-  class: "btn btn-dark" %>
-  
-  <%= link_to "Edit Character",
-      edit_character_path(@character),
-      class: "btn btn-dark" %>
-
-  <%= button_to "Delete Character",
-      character_path(@character),
-      method: :delete,
-      class: "btn btn-outline-danger mt-3" %>
-
-  <div class="card shadow-sm mt-3 p-4">
+<section class="character-show-page">
+  <div class="character-show-shell">
     <%= turbo_stream_from "character_#{@character.id}" %>
-    
-    <h1><%= @character.name %></h1>
 
-    <div class="d-flex justify-content-center">
-      <%= render "image", character: @character %>
-    </div>
+    <header class="home-navbar">
+      <%= link_to root_path, class: "home-brand", aria: { label: "Go to homepage" } do %>
+        <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
+        <span class="home-brand-name">AI Lore <span>Generator</span></span>
+      <% end %>
 
-    <div class="character-info mt-5">
-      <p>
-        <strong>Race:</strong>
-        <%= @character.race %>
-      </p>
-
-      <p>
-        <strong>Role:</strong>
-        <%= @character.role %>
-      </p>
-
-      <p>
-        <strong>Gender:</strong>
-        <%= @character.gender %>
-      </p>
-
-      <p>
-        <strong>Personality:</strong>
-        <%= @character.personality %>
-      </p>
-
-        <% if @character.backstory.present? %>
-        <p><strong>Backstory: </strong><%= @character.backstory %></p>
+      <div class="home-navbar-right">
+        <% if user_signed_in? %>
+          <a href="#" class="home-messages-link"><i class="fa-regular fa-envelope" aria-hidden="true"></i> Messages</a>
+          <div class="dropdown home-profile-menu">
+            <button class="home-avatar" id="characterShowNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+              <% if current_user.avatar_url.present? %>
+                <%= image_tag current_user.avatar_url,
+                    class: "home-avatar-image",
+                    alt: current_user.email,
+                    referrerpolicy: "no-referrer" %>
+              <% else %>
+                <% profile_name = current_user.respond_to?(:name) ? current_user.name.to_s.strip : "" %>
+                <% initials = if profile_name.present?
+                  profile_name.split.map { |part| part.first }.join.first(2).upcase
+                else
+                  current_user.email.to_s.first.to_s.upcase
+                end %>
+                <span><%= initials %></span>
+              <% end %>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end home-dropdown-menu" aria-labelledby="characterShowNavbarDropdown">
+              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class: "home-login-link" %>
         <% end %>
+      </div>
+    </header>
 
-      <hr>
-
-      <%= button_to "Start Chat",
-          character_chats_path(@character),
-          class: "btn btn-dark mt-3" %>
-    </div>
-
-    <hr>
-
-    <h2>Chats</h2>
-
-    <% if @chats.any? %>
-      <ul>
-        <% @chats.each do |chat| %>
-          <li class="d-flex align-items-center gap-2 mb-2">
-            <% first_user_message = chat.messages.where(role: "user").order(:created_at).first %>
-            <%= link_to first_user_message&.content.presence || "New chat",
-                chat_path(chat) %>
-            <span class="text-muted">
-              <%= chat.created_at.strftime("%d/%m/%Y %H:%M") %>
-            </span>
-            <%= button_to "Delete",
-                chat_path(chat),
-                method: :delete,
-                class: "btn btn-sm btn-outline-danger" %>
-          </li>
+    <div class="character-show-content">
+      <div class="character-show-top-actions">
+        <%= link_to characters_path, class: "character-show-back" do %>
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          <span>Back</span>
         <% end %>
-      </ul>
-    <% else %>
-      <p>No chats yet.</p>
-    <% end %>
+      </div>
+
+      <div class="character-show-layout">
+        <aside class="character-show-left">
+          <div class="character-show-portrait">
+            <%= render "image", character: @character %>
+          </div>
+
+          <section class="character-show-panel character-show-chat-panel">
+            <div class="character-show-panel-heading">
+              <span class="character-show-panel-icon"><i class="fa-solid fa-comments" aria-hidden="true"></i></span>
+              <h2>Start Chat</h2>
+            </div>
+            <p>Begin a conversation with <%= @character.name.presence || "this character" %> and continue the adventure.</p>
+            <%= button_to character_chats_path(@character), class: "character-show-primary-action" do %>
+              <i class="fa-regular fa-message" aria-hidden="true"></i>
+              <span>Start Chat</span>
+            <% end %>
+          </section>
+        </aside>
+
+        <main class="character-show-main">
+          <section class="character-show-panel character-show-identity">
+            <div class="character-show-title-row">
+              <span class="character-show-title-icon"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+              <h1><%= @character.name.presence || "Personnage sans nom" %></h1>
+            </div>
+
+            <div class="character-show-details-grid">
+              <div class="character-show-detail">
+                <span class="character-show-detail-icon"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
+                <div>
+                  <p>Race</p>
+                  <strong><%= @character.race.presence || "Non renseignée" %></strong>
+                </div>
+              </div>
+
+              <div class="character-show-detail">
+                <span class="character-show-detail-icon"><i class="fa-solid fa-wand-sparkles" aria-hidden="true"></i></span>
+                <div>
+                  <p>Role</p>
+                  <strong><%= @character.role.presence || "Non renseigné" %></strong>
+                </div>
+              </div>
+
+              <div class="character-show-detail">
+                <span class="character-show-detail-icon"><i class="fa-solid fa-venus-mars" aria-hidden="true"></i></span>
+                <div>
+                  <p>Gender</p>
+                  <strong><%= @character.gender.presence || "Non renseigné" %></strong>
+                </div>
+              </div>
+
+              <div class="character-show-detail">
+                <span class="character-show-detail-icon"><i class="fa-regular fa-gem" aria-hidden="true"></i></span>
+                <div>
+                  <p>Personality</p>
+                  <strong><%= @character.personality.presence || "Non renseignée" %></strong>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="character-show-panel character-show-backstory">
+            <div class="character-show-panel-heading">
+              <span class="character-show-panel-icon"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span>
+              <h2>Backstory</h2>
+            </div>
+            <% if @character.backstory.present? %>
+              <p><%= @character.backstory %></p>
+            <% elsif @character.history.present? %>
+              <p><%= @character.history %></p>
+            <% else %>
+              <p>No backstory yet.</p>
+            <% end %>
+          </section>
+
+          <section class="character-show-panel character-show-chats">
+            <div class="character-show-panel-heading">
+              <span class="character-show-panel-icon"><i class="fa-solid fa-message" aria-hidden="true"></i></span>
+              <h2>Chats</h2>
+            </div>
+
+            <% if @chats.any? %>
+              <div class="character-show-chat-list">
+                <% @chats.each do |chat| %>
+                  <% first_user_message = chat.messages.where(role: "user").order(:created_at).first %>
+                  <div class="character-show-chat-item">
+                    <%= link_to chat_path(chat), class: "character-show-chat-link" do %>
+                      <span><%= first_user_message&.content.presence || "New chat" %></span>
+                      <small><%= chat.created_at.strftime("%d/%m/%Y %H:%M") %></small>
+                    <% end %>
+                    <%= button_to chat_path(chat),
+                        method: :delete,
+                        class: "character-show-chat-delete",
+                        data: { turbo_confirm: "Supprimer ce chat ?" } do %>
+                      <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <p>No chats yet.</p>
+            <% end %>
+          </section>
+        </main>
+      </div>
+    </div>
   </div>
-</div>
+</section>
