@@ -1,27 +1,41 @@
-<h2>Change your password</h2>
+<section class="auth-page">
+  <div class="auth-shell">
+    <%= render "devise/shared/auth_navbar" %>
 
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= f.error_notification %>
+    <div class="auth-content">
+      <section class="auth-card" aria-labelledby="auth-title">
+        <p class="auth-kicker">NOUVELLE CLÉ D'ACCÈS</p>
+        <h1 id="auth-title">Changer le mot de passe</h1>
 
-  <%= f.input :reset_password_token, as: :hidden %>
-  <%= f.full_error :reset_password_token %>
+        <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "auth-form" }) do |f| %>
+          <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :password,
-                label: "New password",
-                required: true,
-                autofocus: true,
-                hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                label: "Confirm your new password",
-                required: true,
-                input_html: { autocomplete: "new-password" } %>
+          <%= f.input :reset_password_token, as: :hidden %>
+          <%= f.full_error :reset_password_token %>
+
+          <div class="auth-form-fields">
+            <%= f.input :password,
+                        label: "Nouveau mot de passe",
+                        required: true,
+                        autofocus: true,
+                        placeholder: "Entrez votre nouveau mot de passe",
+                        hint: ("#{@minimum_password_length} caractères minimum" if @minimum_password_length),
+                        input_html: { autocomplete: "new-password" } %>
+
+            <%= f.input :password_confirmation,
+                        label: "Confirmer le nouveau mot de passe",
+                        required: true,
+                        placeholder: "Confirmez votre nouveau mot de passe",
+                        input_html: { autocomplete: "new-password" } %>
+          </div>
+
+          <div class="auth-actions">
+            <%= f.button :submit, "Changer mon mot de passe", class: "auth-submit" %>
+          </div>
+        <% end %>
+
+        <%= render "devise/shared/links" %>
+      </section>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</section>

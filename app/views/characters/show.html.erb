@@ -3,7 +3,7 @@
     <%= turbo_stream_from "character_#{@character.id}" %>
 
     <header class="home-navbar">
-      <%= link_to root_path, class: "home-brand", aria: { label: "Go to homepage" } do %>
+      <%= link_to root_path, class: "home-brand", aria: { label: "Retour à l'accueil" } do %>
         <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
         <span class="home-brand-name">AI Lore <span>Generator</span></span>
       <% end %>
@@ -11,7 +11,7 @@
       <div class="home-navbar-right">
         <% if user_signed_in? %>
           <div class="dropdown home-profile-menu">
-            <button class="home-avatar" id="characterShowNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+            <button class="home-avatar" id="characterShowNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ouvrir le menu utilisateur">
               <% if current_user.avatar_url.present? %>
                 <%= image_tag current_user.avatar_url,
                     class: "home-avatar-image",
@@ -28,11 +28,11 @@
               <% end %>
             </button>
             <div class="dropdown-menu dropdown-menu-end home-dropdown-menu" aria-labelledby="characterShowNavbarDropdown">
-              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
+              <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
             </div>
           </div>
         <% else %>
-          <%= link_to "Login", new_user_session_path, class: "home-login-link" %>
+          <%= link_to "Connexion", new_user_session_path, class: "home-login-link" %>
         <% end %>
       </div>
     </header>
@@ -41,12 +41,12 @@
       <div class="character-show-top-actions">
         <%= link_to characters_path, class: "character-show-back" do %>
           <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-          <span>Back</span>
+          <span>Retour</span>
         <% end %>
 
         <%= link_to edit_character_path(@character), class: "character-show-back" do %>
           <i class="fa-solid fa-pen" aria-hidden="true"></i>
-          <span>Edit Character</span>
+          <span>Modifier</span>
         <% end %>
 
         <%= button_to character_path(@character),
@@ -54,7 +54,7 @@
             class: "character-show-delete",
             data: { turbo_confirm: "Supprimer ce personnage ?" } do %>
           <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
-          <span>Delete Character</span>
+          <span>Supprimer</span>
         <% end %>
       </div>
 
@@ -67,12 +67,12 @@
           <section class="character-show-panel character-show-chat-panel">
             <div class="character-show-panel-heading">
               <span class="character-show-panel-icon"><i class="fa-solid fa-comments" aria-hidden="true"></i></span>
-              <h2>Start Chat</h2>
+              <h2>Démarrer une discussion</h2>
             </div>
-            <p>Begin a conversation with <%= @character.name.presence || "this character" %> and continue the adventure.</p>
+            <p>Commencez une conversation avec <%= @character.name.presence || "ce personnage" %> et poursuivez l'aventure.</p>
             <%= button_to character_chats_path(@character), class: "character-show-primary-action" do %>
               <i class="fa-regular fa-message" aria-hidden="true"></i>
-              <span>Start Chat</span>
+              <span>Démarrer la discussion</span>
             <% end %>
           </section>
         </aside>
@@ -89,31 +89,31 @@
                 <span class="character-show-detail-icon"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
                 <div>
                   <p>Race</p>
-                  <strong><%= @character.race.presence || "Non renseignée" %></strong>
+                  <strong><%= character_display_value(:race, @character.race, fallback: "Non renseignée") %></strong>
                 </div>
               </div>
 
               <div class="character-show-detail">
                 <span class="character-show-detail-icon"><i class="fa-solid fa-wand-sparkles" aria-hidden="true"></i></span>
                 <div>
-                  <p>Role</p>
-                  <strong><%= @character.role.presence || "Non renseigné" %></strong>
+                  <p>Rôle</p>
+                  <strong><%= character_display_value(:role, @character.role) %></strong>
                 </div>
               </div>
 
               <div class="character-show-detail">
                 <span class="character-show-detail-icon"><i class="fa-solid fa-venus-mars" aria-hidden="true"></i></span>
                 <div>
-                  <p>Gender</p>
-                  <strong><%= @character.gender.presence || "Non renseigné" %></strong>
+                  <p>Genre</p>
+                  <strong><%= character_display_value(:gender, @character.gender) %></strong>
                 </div>
               </div>
 
               <div class="character-show-detail">
                 <span class="character-show-detail-icon"><i class="fa-regular fa-gem" aria-hidden="true"></i></span>
                 <div>
-                  <p>Personality</p>
-                  <strong><%= @character.personality.presence || "Non renseignée" %></strong>
+                  <p>Personnalité</p>
+                  <strong><%= character_display_value(:personality, @character.personality, fallback: "Non renseignée") %></strong>
                 </div>
               </div>
             </div>
@@ -122,21 +122,21 @@
           <section class="character-show-panel character-show-backstory">
             <div class="character-show-panel-heading">
               <span class="character-show-panel-icon"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span>
-              <h2>Backstory</h2>
+              <h2>Histoire</h2>
             </div>
             <% if @character.backstory.present? %>
               <p><%= @character.backstory %></p>
             <% elsif @character.history.present? %>
               <p><%= @character.history %></p>
             <% else %>
-              <p>No backstory yet.</p>
+              <p>Aucune histoire pour le moment.</p>
             <% end %>
           </section>
 
           <section class="character-show-panel character-show-chats">
             <div class="character-show-panel-heading">
               <span class="character-show-panel-icon"><i class="fa-solid fa-message" aria-hidden="true"></i></span>
-              <h2>Chats</h2>
+              <h2>Discussions</h2>
             </div>
 
             <% if @chats.any? %>
@@ -145,20 +145,20 @@
                   <% first_user_message = chat.messages.where(role: "user").order(:created_at).first %>
                   <div class="character-show-chat-item">
                     <%= link_to chat_path(chat), class: "character-show-chat-link" do %>
-                      <span><%= first_user_message&.content.presence || "New chat" %></span>
+                      <span><%= first_user_message&.content.presence || "Nouvelle discussion" %></span>
                       <small><%= chat.created_at.strftime("%d/%m/%Y %H:%M") %></small>
                     <% end %>
                     <%= button_to chat_path(chat),
                         method: :delete,
                         class: "character-show-chat-delete",
-                        data: { turbo_confirm: "Supprimer ce chat ?" } do %>
+                        data: { turbo_confirm: "Supprimer cette discussion ?" } do %>
                       <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
                     <% end %>
                   </div>
                 <% end %>
               </div>
             <% else %>
-              <p>No chats yet.</p>
+              <p>Aucune discussion pour le moment.</p>
             <% end %>
           </section>
         </main>

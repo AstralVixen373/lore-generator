@@ -7,14 +7,14 @@
     </div>
 
     <header class="home-navbar">
-      <%= link_to root_path, class: "home-brand", aria: { label: "Go to homepage" } do %>
+      <%= link_to root_path, class: "home-brand", aria: { label: "Retour à l'accueil" } do %>
         <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
         <span class="home-brand-name">AI Lore Generator</span>
       <% end %>
       <div class="home-navbar-right">
         <% if user_signed_in? %>
           <div class="dropdown home-profile-menu">
-            <button class="home-avatar" id="homeNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+            <button class="home-avatar" id="homeNavbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ouvrir le menu utilisateur">
               <% if current_user.avatar_url.present? %>
                 <%= image_tag current_user.avatar_url,
                     class: "home-avatar-image",
@@ -31,11 +31,11 @@
               <% end %>
             </button>
             <div class="dropdown-menu dropdown-menu-end home-dropdown-menu" aria-labelledby="homeNavbarDropdown">
-              <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
+              <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item home-dropdown-item" %>
             </div>
           </div>
         <% else %>
-          <%= link_to "Login", new_user_session_path, class: "home-login-link" %>
+          <%= link_to "Connexion", new_user_session_path, class: "home-login-link" %>
         <% end %>
       </div>
     </header>

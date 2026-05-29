@@ -1,20 +1,80 @@
-<h2>Log in</h2>
+<section class="auth-page">
+  <div class="auth-shell">
+    <header class="home-navbar auth-navbar">
+      <%= link_to root_path, class: "home-brand", aria: { label: "Retourner à l'accueil" } do %>
+        <%= image_tag "logo-lore.png", class: "home-brand-logo", alt: "AI Lore Generator" %>
+        <span class="home-brand-name">AI Lore Generator</span>
+      <% end %>
+    </header>
 
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: false,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
-    <%= f.input :password,
-                required: false,
-                input_html: { autocomplete: "current-password" } %>
-    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+    <div class="auth-content">
+      <section class="auth-card" aria-labelledby="auth-title">
+        <p class="auth-kicker">ENTREZ DANS LE PORTAIL</p>
+        <h1 id="auth-title">Connexion</h1>
+
+        <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+          <div class="auth-form-fields">
+            <%= f.input :email,
+                        required: false,
+                        autofocus: true,
+                        label: "Adresse email",
+                        placeholder: "Entrez votre adresse email",
+                        input_html: {
+                          autocomplete: "email",
+                          class: "auth-input"
+                        } %>
+
+            <%= f.input :password,
+                        required: false,
+                        label: "Mot de passe",
+                        placeholder: "Entrez votre mot de passe",
+                        input_html: {
+                          autocomplete: "current-password",
+                          class: "auth-input"
+                        } %>
+
+            <%= f.input :remember_me,
+                        as: :boolean,
+                        label: "Se souvenir de moi",
+                        wrapper_html: { class: "auth-remember" },
+                        input_html: { class: "auth-checkbox" } if devise_mapping.rememberable? %>
+          </div>
+
+          <div class="auth-actions">
+            <%= f.submit "Se connecter", class: "auth-submit" %>
+          </div>
+        <% end %>
+
+        <div class="auth-links">
+          <% if devise_mapping.registerable? %>
+            <%= link_to "Créer un compte", new_registration_path(resource_name) %>
+          <% end %>
+
+          <% if devise_mapping.recoverable? %>
+            <%= link_to "Mot de passe oublié ?", new_password_path(resource_name) %>
+          <% end %>
+        </div>
+
+        <% if devise_mapping.omniauthable? %>
+          <div class="auth-divider" aria-hidden="true"></div>
+
+          <div class="auth-provider-actions">
+            <% resource_class.omniauth_providers.each do |provider| %>
+              <% provider_name = provider.to_s == "google_oauth2" ? "Google" : OmniAuth::Utils.camelize(provider) %>
+              <%= form_for "Connexion",
+                url: omniauth_authorize_path(resource_name, provider),
+                method: :post,
+                data: { turbo: "false" },
+                html: { class: "auth-provider-form" } do |f| %>
+                  <%= f.button type: "submit", class: "auth-google-button" do %>
+                    <%= image_tag "Google__G__logo.svg.webp", class: "auth-google-logo", alt: "", aria: { hidden: true } %>
+                    <span>Se connecter avec <%= provider_name %></span>
+                  <% end %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </section>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</section>
